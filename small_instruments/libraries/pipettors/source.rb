@@ -94,21 +94,17 @@ module Pipettors
     def pipet(volume:, source:, destination:)
       max_volume = self.class::MAX_VOLUME
       if volume[:qty] <= max_volume
-        volume[:qty] = volume[:qty].round(self.class::ROUND_TO) 
-        a = "Set a <b>#{self.class::NAME}</b> pipet to "\
-          "<b>#{qty_display(volume)}</b>."
-        b = "  Pipet #{qty_display(volume)} from <b>#{source}</b>"\
-          " into <b>#{destination}</b>"
+        volume[:qty] = volume[:qty].round(self.class::ROUND_TO)
+        "Use a <b>#{self.class::NAME}</b> to pipet <b>#{qty_display(volume)}</b>"\
+          " from <b>#{source}</b> into <b>#{destination}</b>"
       else
         sub_volume = {qty: nil, units: volume[:units]}
         times = (volume[:qty].to_f/max_volume).ceil.to_f
         sub_volume[:qty] = (volume[:qty] / times).round(self.class::ROUND_TO)
-        a = "Set a <b>#{self.class::NAME}</b> pipet to "\
-          "<b>#{qty_display(sub_volume)}</b>."
-        b = "  Pipet #{times.round} times from <b>#{source}</b>"\
+        "Use a <b>#{self.class::NAME}</b> #{times.round} times"\
+          " to pipet <b>#{qty_display(volume)}</b> from <b>#{source}</b>"\
           " into <b>#{destination}</b>"
       end
-      [a,b]
     end
 
     # Returns the number of channels a pipettor has
